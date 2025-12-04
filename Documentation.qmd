@@ -3,3 +3,8 @@ title: "Documentation"
 ---
 
 Functions:
+list functions
+arguments it takes in
+short descriptions of what it does and when you would run it
+
+** use chatGPT to write documentation using markdown
