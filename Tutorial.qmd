@@ -10,7 +10,7 @@ from final_project_demo import add
 
 print(add(2, 19))
 ```
-
+have code that actually runs to demonstrate the package actually runs
 
 ```{python}
 from final_project_demo import run_analysis_pipeline, run_cleaning_pipeling
