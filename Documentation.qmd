@@ -1,12 +1,196 @@
 ---
 title: "Documentation"
 ---
+This goes through the process of each function for each step of our process of collecting the data, organizing it into a coherent dataset, and performing analysis.
 
-Functions:
+The first part starts with the collection of baseball hitting statistics from 2018 - 2025 to get a large sample of current data to work with. Collecting salaries was more complicated so we will go over this after. All the data was collected through the site baseball-reference.com.
+
+This first chunk will show the initial setup for the data collection:
+```{python}
+import requests
+import re
+from bs4 import BeautifulSoup
+import pandas as pd
+import time
+
+URLS = [
+    'https://www.baseball-reference.com/leagues/majors/2018-standard-batting.shtml',
+    'https://www.baseball-reference.com/leagues/majors/2019-standard-batting.shtml',
+    'https://www.baseball-reference.com/leagues/majors/2020-standard-batting.shtml',
+    'https://www.baseball-reference.com/leagues/majors/2021-standard-batting.shtml',
+    'https://www.baseball-reference.com/leagues/majors/2022-standard-batting.shtml',
+    'https://www.baseball-reference.com/leagues/majors/2023-standard-batting.shtml',
+    'https://www.baseball-reference.com/leagues/majors/2024-standard-batting.shtml',
+    'https://www.baseball-reference.com/leagues/majors/2025-standard-batting.shtml',
+]
+
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+}
+
+COLUMNS = [
+    'Rk','Player','Age','Team','Lg','WAR','G','PA','AB','R','H','2B','3B','HR','RBI',
+    'SB','CS','BB','SO','BA','OBP','SLG','OPS','OPS+','rOBA','Rbat+','TB','GIDP',
+    'HBP','SH','SF','IBB','Pos','Awards'
+]
+```
+
+This chunk sets up where the data is going to be scraped from and which columns to use.
+
+This second chunk is the function to actually scrape all the statistics data from those pages. It identifies where to scrape from, how many rows to scrape, and loops through the hitting dataset from each year from 2018 - 2025. It creates the dataframe for all the statistics.
+
+```{python}
+def scrape_batting_data(urls):
+    all_data = []
+
+    for url in urls:
+        year = int(re.search(r'/(\d{4})', url).group(1))
+        print(f"\nScraping {year}...")
+
+        r = requests.get(url, headers=HEADERS, timeout=15)
+        r.raise_for_status()
+        soup = BeautifulSoup(r.text, 'html.parser')
+
+        div = soup.find('div', id='switcher_players_standard_batting')
+        if not div:
+            print("  Switcher div not found")
+            continue
+
+        table = div.find('table', id='players_standard_batting')
+        if not table:
+            print("  Table not found")
+            continue
+
+        tbody = table.find('tbody')
+        if not tbody:
+            print("  Tbody not found")
+            continue
+
+        seen = set()
+
+        for row in tbody.find_all('tr'):
+            if row.get('class') and 'thead' in row.get('class'):
+                continue
+
+            cells = row.find_all(['th', 'td'])
+            if len(cells) < 25:
+                continue
+
+            player_cell = cells[1]
+            player_name = player_cell.get_text(strip=True)
+            team = cells[3].get_text(strip=True)
+
+            if player_name in seen and team != 'TOT':
+                continue
+
+            if team == 'TOT' or player_name not in seen:
+                seen.add(player_name)
+
+                row_dict = {'Year': year}
+
+                pos_map = {
+                    0: 'Rk', 1: 'Player', 2: 'Age', 3: 'Team', 4: 'Lg',
+                    5: 'WAR', 6: 'G', 7: 'PA', 8: 'AB', 9: 'R', 10: 'H',
+                    11: '2B', 12: '3B', 13: 'HR', 14: 'RBI', 15: 'SB',
+                    16: 'CS', 17: 'BB', 18: 'SO', 19: 'BA', 20: 'OBP',
+                    21: 'SLG', 22: 'OPS', 23: 'OPS+', 24: 'rOBA',
+                    25: 'Rbat+', 26: 'TB', 27: 'GIDP', 28: 'HBP',
+                    29: 'SH', 30: 'SF', 31: 'IBB', 32: 'Pos', 33: 'Awards'
+                }
+
+                for idx, cell in enumerate(cells):
+                    col_name = pos_map.get(idx)
+                    if not col_name:
+                        continue
+
+                    if col_name == 'Player':
+                        row_dict['Player'] = player_name
+                        a = cell.find('a')
+                        if a:
+                            row_dict['Player_Link'] = (
+                                'https://www.baseball-reference.com' + a['href']
+                            )
+                    else:
+                        row_dict[col_name] = cell.get_text(strip=True)
+
+                for col in COLUMNS:
+                    row_dict.setdefault(col, '')
+
+                all_data.append(row_dict)
+
+        print(f"  {len(seen)} players scraped for {year}")
+        time.sleep(1.2)
+
+    return all_data
+```
+
+This third function cleans the data and organizes it into a coherent dataframe. The function within it, get_batting_hand(), identifies whether each player is left handed, right handed, or bats with both hands, as we decided this would also be useful information in determining the overall value of a hitter.
+
+```{python}
+def clean_batting_data(df):
+    numeric_cols = [
+        'Age','WAR','G','PA','AB','R','H','2B','3B','HR','RBI','SB','CS',
+        'BB','SO','OPS+','TB','GIDP','HBP','SH','SF','IBB','Rbat+'
+    ]
+
+    for col in numeric_cols:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    df = df[~df['Player'].str.contains('MLB Average', case=False, na=False)]
+    df = df[df['PA'] >= 100]
+
+    def get_batting_hand(name):
+        if name.endswith('*'):
+            return 'both'
+        elif name.endswith('#'):
+            return 'left'
+        elif name.endswith('?'):
+            return 'unknown'
+        return 'right'
+
+    df['batting_hand'] = df['Player'].apply(get_batting_hand)
+    df['Player'] = df['Player'].str.rstrip('*#?')
+
+    df = df.drop(columns=['Awards'])
+    df = df.sort_values(['Player', 'Year'])
+    df = df.drop_duplicates(subset=['Player', 'Year'], keep='first')
+
+    player_counts = df['Player'].value_counts()
+    players_2plus = player_counts[player_counts >= 3].index
+    df = df[df['Player'].isin(players_2plus)]
+
+    return df.reset_index(drop=True)
+```
+
+This main function actually implements the previous functions, scraping all the statistics according to how we wanted, to create a dataset of each mlb hitter from 2018 - 2025, filtered to players with over 100 plate appearances in at least one of the seasons.
+
+```{python}
+def main():
+    all_data = scrape_batting_data(URLS)
+
+    df = pd.DataFrame(
+        all_data,
+        columns=['Year'] + COLUMNS + ['Player_Link']
+    )
+
+    mlb = clean_batting_data(df)
+
+    mlb.to_csv('MLB_2018_2025_Cleaned.csv', index=False)
+    print("\nSaved: MLB_2018_2025_Cleaned.csv")
+
+
+# ==========================
+# ENTRY POINT
+# ==========================
+
+if __name__ == "__main__":
+    main()
+```
+
+Now we will move on to the next part of the data collection, which is gathering the salary data. This was more complicated to collect, because there is no dataset that has each player's salary data in one place. We had to build a scraper that iterated through the unique page of each player in the dataset within baseball-reference and scraped their salaries from 2018 - 2025. The first dataset had included the links to each of these players' pages, so we utilized this to create a json file of unique player links for the scraper to iterate through, so that no players' page would be accessed more than once. Each code chunk will be explained below.
 
 ```{python}
 def create_http_headers() -> dict[str, str]:
-    """Create headers that mimic a real browser to avoid being blocked"""
     return {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -17,7 +201,7 @@ def create_http_headers() -> dict[str, str]:
     }
 ```
 
-This function creates the headers that allows us to access the data and browser without being blocked.
+This first function creates the headers that allows us to access the data and browser without being blocked.
 
 ```{python}
 def parse_salary_table_from_soup(soup: BeautifulSoup) -> dict[int, int]:
@@ -78,11 +262,11 @@ def parse_salary_table_from_soup(soup: BeautifulSoup) -> dict[int, int]:
    
     return salary_dict
   ```
-  This function is the one that finds and parses the salary data in each player's page. It identifies where it is, finds the salaries from 2018-2025, and converts the data frmo string to integer form.
+
+  This second function is the one that finds and parses the salary data in each player's page. It identifies where it is, finds the salaries from 2018-2025, and converts the data frmo string to integer form. One difficulty is that many, if not all, of the players' salary data was within comments in the source code of their individual pages, so we had to account for this in our scraper.
   
   ```{python}
   async def scrape_salary_from_url(url: str, session: aiohttp.ClientSession) -> dict[int, int]:
-    """Scrape salary data from a baseball-reference player page using HTTP GET"""
     print(f"Starting to scrape {url}.")
    
     try:
@@ -108,6 +292,7 @@ def parse_salary_table_from_soup(soup: BeautifulSoup) -> dict[int, int]:
         print(f"Unexpected error while scraping {url}: {e}")
         return {}
 ```
+
 This function downloads each player's page asynchonously and extracts the salary data.
 
 ```{python}
@@ -123,7 +308,7 @@ def extract_unique_links(csv_path: str, output_json_path: str) -> None:
         json.dump(links_with_ids, f, indent=2)
 ```
 
-This function extracts the links out of the dataset of player links, to create a list of each unique players' page links (each player's link appearing once).
+This function extracts the links out of the dataset of player links, to create a list of each unique players' page links (each player's link appearing once). This allows our function to easily loop through without accessing players' pages multiple times, as many players played multiple seasons over the 2018 - 2025 period.
 
 ```{python}
 def scrape_with_cloudscraper(url: str, scraper) -> dict[int, int]:
@@ -136,11 +321,11 @@ def scrape_with_cloudscraper(url: str, scraper) -> dict[int, int]:
         print(f"Failed {url}: {e}")
         return {}
 ```
+
 This function utilizes cloudscraper to bypass Cloudflare in baseball-reference, ebcause cloudflare was blocking any attempts to scrape data from the pages otherwise.
 
 ```{python}
 def churn_with_cloudscraper():
-    # This bypasses Cloudflare ~80–90% of the time
     scraper = cloudscraper.create_scraper(
         browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False},
         delay=10
@@ -149,7 +334,6 @@ def churn_with_cloudscraper():
     with open("unique_links.json", "r") as f:
         links = json.load(f)
 
-    # Resume logic same as yours
     try:
         with open("salaries.json", "r") as f:
             existing = json.load(f)
@@ -180,5 +364,10 @@ def churn_with_cloudscraper():
 ```
 
 This function organizes everything together to scrape the data, utilizing cloudscraper, laoding all the urls, saving progress to be able to pause and resume later, iterates over each link, limits rates, and outputs the data to salaries.json.
+
+<<<<<<< HEAD
+>>>>>>> partner/master
+=======
+
 
 >>>>>>> partner/master

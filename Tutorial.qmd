@@ -18,3 +18,9 @@ from final_project_demo import run_analysis_pipeline, run_cleaning_pipeling
 run_cleaning_pipeling()
 run_analysis_pipeline()
 ```
+
+```{python}
+from bb_salaries import create_http_headers
+```
+
+>>>>>>> partner/master
