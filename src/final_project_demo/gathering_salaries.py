@@ -124,6 +124,8 @@ async def scrape_salary_from_url(url: str, session: aiohttp.ClientSession) -> di
         print(f"Unexpected error while scraping {url}: {e}")
         return {}
 
+# csv_path='MLB_2018_2025_Cleaned.csv'
+# output_json_path='unique_links.json'
 
 def extract_unique_links(csv_path: str, output_json_path: str) -> None:
     """Extract unique player links from CSV and save as JSON"""
@@ -190,7 +192,7 @@ def churn_with_cloudscraper():
 
 if __name__ == "__main__":
     # Uncomment to extract unique links from CSV
-    # extract_unique_links("players.csv", "unique_links.json")
+    extract_unique_links("MLB_2018_2025_Cleaned.csv", "unique_links.json")
    
     # Uncomment to test single scrape
     # async def test_single_scrape():
@@ -199,8 +201,11 @@ if __name__ == "__main__":
     #         print(result)
     # asyncio.run(test_single_scrape())
    
-    # Uncomment to run full scraping
-    asyncio.run(churn_with_cloudscraper())
+    ## Uncomment to run full scraping
+    ## asyncio.run(churn_with_cloudscraper())
+
+    # Remove asyncio.run() since churn_with_cloudscraper is not async
+    # churn_with_cloudscraper()
 
 
 with open("salaries.json") as f:

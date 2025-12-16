@@ -1,88 +1,409 @@
-"""Toy Streamlit app students can customize for STAT 386 projects."""
-
-from __future__ import annotations
-
-import io
-from contextlib import redirect_stdout
-
-import pandas as pd
 import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
-from final_project_demo.analysis import add, run_analysis_pipeline
-from final_project_demo.cleaning import run_cleaning_pipeling
+# Load your data
+# df_filtered = pd.read_csv('MLB_2018_2025_Full.csv')  # or however you load it
 
+from final_project_demo.analysis import (
+    filter_players_with_multiple_seasons,
+    create_contract_indicators,
+    run_mixed_effects_models,        # optional, if you want models
+    generate_visualizations,         # optional, if you want plots
+)
 
-def _sample_data() -> pd.DataFrame:
-    """Small placeholder dataset for rapid UI feedback."""
-    return pd.DataFrame(
-        {
-            "team": ["alpha", "beta", "gamma"],
-            "metric_a": [0.72, 0.55, 0.91],
-            "metric_b": [12, 9, 17],
-        }
+# Cache the processed data so it only runs once (or when the CSV changes)
+@st.cache_data
+def get_processed_df():
+    # Step 1: Load the pre-merged file (fast!)
+    print("Loading pre-merged data...")
+    df_full = pd.read_csv('MLB_2018_2025_Full.csv')
+    
+    # Step 2: Filter players with enough seasons
+    df_filtered = filter_players_with_multiple_seasons(df_full, min_seasons=5)
+    
+    # Step 3: Create the crucial contract indicators
+    df_processed = create_contract_indicators(df_filtered)
+    
+    return df_processed
+
+# Load the processed DataFrame (now it HAS big_contract_year!)
+df_filtered = get_processed_df()
+
+# ============================================
+# PAGE CONFIG
+# ============================================
+st.set_page_config(
+    page_title="Baseball Contract Analysis",
+    page_icon="⚾",
+    layout="wide"
+)
+
+# ============================================
+# TITLE AND INTRO
+# ============================================
+st.title("⚾ Baseball Contract Performance Analysis")
+st.markdown("""
+Explore how player performance changes after signing big contracts.
+Analyze individual players, compare groups, and investigate the relationship between salary and performance.
+""")
+
+# ============================================
+# LOAD DATA (You'll need to pass your df_filtered)
+# ============================================
+# NOTE: In actual use, you'd load your data here
+# For now, I'll show the structure assuming df_filtered exists
+
+st.sidebar.header("Filters")
+
+# ============================================
+# SIDEBAR FILTERS
+# ============================================
+
+# Player selection
+if 'player' in df_filtered.columns:
+    all_players = sorted(df_filtered['player'].unique())
+    selected_player = st.sidebar.selectbox(
+        "Select Player for Individual Analysis",
+        options=["Overview"] + all_players
     )
+else:
+    selected_player = "Overview"
+    st.error("Player column not found in dataset")
 
-
-def _run_with_capture(func) -> str:
-    """Capture stdout from placeholder pipelines so Streamlit can display it."""
-    buffer = io.StringIO()
-    with redirect_stdout(buffer):
-        func()
-    return buffer.getvalue().strip()
-
-
-def main() -> None:
-    st.set_page_config(page_title="STAT 386 Prototype", layout="wide")
-    st.title("STAT 386 Project Prototype")
-    st.write(
-        "Use this template Streamlit app as a quick sandbox. Replace the sample data, "
-        "plug in your cleaning pipeline, and surface the most important visuals for your final deliverable."
+# Age filter
+if 'age' in df_filtered.columns:
+    age_range = st.sidebar.slider(
+        "Age Range",
+        min_value=int(df_filtered['age'].min()),
+        max_value=int(df_filtered['age'].max()),
+        value=(int(df_filtered['age'].min()), int(df_filtered['age'].max()))
     )
+else:
+    age_range = None
 
-    with st.sidebar:
-        st.header("Controls")
-        dataset_choice = st.selectbox("Dataset", ["Sample Data", "Upload CSV"])
-        show_cleaning = st.checkbox("Preview cleaning pipeline output")
-        show_analysis = st.checkbox("Preview analysis pipeline output")
-        a = st.number_input("Toy add() input A", value=1)
-        b = st.number_input("Toy add() input B", value=2)
+# Year filter
+year_range = st.sidebar.slider(
+    "Year Range",
+    min_value=int(df_filtered['year'].min()),
+    max_value=int(df_filtered['year'].max()),
+    value=(int(df_filtered['year'].min()), int(df_filtered['year'].max()))
+)
 
-    if dataset_choice == "Sample Data":
-        df = _sample_data()
+# Contract size filter
+salary_range = st.sidebar.slider(
+    "Salary Range (Millions)",
+    min_value=0.0,
+    max_value=float(df_filtered['salary'].max() / 1_000_000),
+    value=(0.0, float(df_filtered['salary'].max() / 1_000_000))
+)
+
+# Apply filters
+df_display = df_filtered[
+    (df_filtered['year'] >= year_range[0]) & 
+    (df_filtered['year'] <= year_range[1]) &
+    (df_filtered['salary'] >= salary_range[0] * 1_000_000) &
+    (df_filtered['salary'] <= salary_range[1] * 1_000_000)
+]
+
+if age_range is not None:
+    df_display = df_display[
+        (df_display['age'] >= age_range[0]) & 
+        (df_display['age'] <= age_range[1])
+    ]
+
+# ============================================
+# MAIN CONTENT
+# ============================================
+
+if selected_player == "Overview":
+    # ============================================
+    # OVERVIEW TAB
+    # ============================================
+    
+    st.header("📊 Overall Analysis")
+    
+    # Key metrics
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric("Total Players", df_display['player'].nunique())
+    
+    with col2:
+        st.metric("Total Seasons", len(df_display))
+    
+    with col3:
+        contracts = df_display[df_display['big_contract_year'] == True]
+        st.metric("Big Contracts", len(contracts))
+    
+    with col4:
+        avg_salary = df_display['salary'].mean() / 1_000_000
+        st.metric("Avg Salary", f"${avg_salary:.1f}M")
+    
+    st.markdown("---")
+    
+    # Pre/Post contract comparison
+    st.subheader("Pre vs Post Contract Performance")
+    
+    df_contract_analysis = df_display[
+        (df_display['years_from_contract'].notna()) & 
+        (df_display['years_from_contract'] >= -3) & 
+        (df_display['years_from_contract'] <= 3)
+    ]
+    
+    if len(df_contract_analysis) > 0:
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Pre/Post stats
+            pre_data = df_contract_analysis[df_contract_analysis['post_contract'] == 0]
+            post_data = df_contract_analysis[df_contract_analysis['post_contract'] == 1]
+            
+            comparison_df = pd.DataFrame({
+                'Metric': ['OPS', 'WAR', 'Salary ($M)'],
+                'Pre-Contract': [
+                    pre_data['ops'].mean(),
+                    pre_data['war'].mean(),
+                    pre_data['salary'].mean() / 1_000_000
+                ],
+                'Post-Contract': [
+                    post_data['ops'].mean(),
+                    post_data['war'].mean(),
+                    post_data['salary'].mean() / 1_000_000
+                ]
+            })
+            comparison_df['Change'] = comparison_df['Post-Contract'] - comparison_df['Pre-Contract']
+            
+            st.dataframe(comparison_df.style.format({
+                'Pre-Contract': '{:.3f}',
+                'Post-Contract': '{:.3f}',
+                'Change': '{:+.3f}'
+            }), use_container_width=True)
+        
+        with col2:
+            # Trajectory plot
+            trajectory = df_contract_analysis.groupby('years_from_contract').agg({
+                'ops': 'mean',
+                'war': 'mean'
+            }).reset_index()
+            
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=trajectory['years_from_contract'],
+                y=trajectory['ops'],
+                mode='lines+markers',
+                name='OPS',
+                line=dict(width=3),
+                marker=dict(size=10)
+            ))
+            
+            fig.add_vline(x=0, line_dash="dash", line_color="red", 
+                         annotation_text="Contract Year")
+            
+            fig.update_layout(
+                title="Average OPS Around Contract Signing",
+                xaxis_title="Years from Contract",
+                yaxis_title="OPS",
+                height=400
+            )
+            
+            st.plotly_chart(fig, use_container_width=True)
+    
+    st.markdown("---")
+    
+    # Distribution plots
+    st.subheader("Performance Distributions")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        # OPS distribution
+        fig = px.histogram(
+            df_display,
+            x='ops',
+            nbins=50,
+            title="OPS Distribution",
+            labels={'ops': 'OPS', 'count': 'Frequency'}
+        )
+        fig.update_layout(height=400)
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with col2:
+        # WAR distribution
+        fig = px.histogram(
+            df_display,
+            x='war',
+            nbins=50,
+            title="WAR Distribution",
+            labels={'war': 'WAR', 'count': 'Frequency'}
+        )
+        fig.update_layout(height=400)
+        st.plotly_chart(fig, use_container_width=True)
+    
+    st.markdown("---")
+    
+    # Salary vs Performance scatter
+    st.subheader("Salary vs Performance")
+    
+    tab1, tab2 = st.tabs(["OPS vs Salary", "WAR vs Salary"])
+    
+    with tab1:
+        fig = px.scatter(
+            df_display,
+            x='salary',
+            y='ops',
+            color='post_contract',
+            hover_data=['player', 'year', 'age'],
+            title="OPS vs Salary",
+            labels={
+                'salary': 'Salary ($)',
+                'ops': 'OPS',
+                'post_contract': 'Post-Contract'
+            },
+            color_discrete_map={0: 'blue', 1: 'red'}
+        )
+        fig.update_layout(height=500)
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with tab2:
+        fig = px.scatter(
+            df_display,
+            x='salary',
+            y='war',
+            color='post_contract',
+            hover_data=['player', 'year', 'age'],
+            title="WAR vs Salary",
+            labels={
+                'salary': 'Salary ($)',
+                'war': 'WAR',
+                'post_contract': 'Post-Contract'
+            },
+            color_discrete_map={0: 'blue', 1: 'red'}
+        )
+        fig.update_layout(height=500)
+        st.plotly_chart(fig, use_container_width=True)
+
+else:
+    # ============================================
+    # INDIVIDUAL PLAYER TAB
+    # ============================================
+    
+    st.header(f"📈 {selected_player}")
+    
+    player_data = df_filtered[df_filtered['player'] == selected_player].sort_values('year')
+    
+    if len(player_data) == 0:
+        st.warning("No data available for this player")
     else:
-        uploaded = st.file_uploader("Upload a CSV file", type="csv")
-        if uploaded:
-            df = pd.read_csv(uploaded)
-        else:
-            st.info("No file uploaded yet. Falling back to the sample data so the widgets stay live.")
-            df = _sample_data()
+        # Player stats summary
+        col1, col2, col3, col4 = st.columns(4)
+        
+        with col1:
+            st.metric("Seasons", len(player_data))
+        
+        with col2:
+            st.metric("Avg OPS", f"{player_data['ops'].mean():.3f}")
+        
+        with col3:
+            st.metric("Avg WAR", f"{player_data['war'].mean():.2f}")
+        
+        with col4:
+            st.metric("Peak Salary", f"${player_data['salary'].max()/1_000_000:.1f}M")
+        
+        st.markdown("---")
+        
+        # Career trajectory
+        st.subheader("Career Trajectory")
+        
+        fig = make_subplots(
+            rows=3, cols=1,
+            subplot_titles=("OPS Over Time", "WAR Over Time", "Salary Over Time"),
+            vertical_spacing=0.1,
+            row_heights=[0.33, 0.33, 0.34]
+        )
+        
+        # OPS
+        fig.add_trace(
+            go.Scatter(
+                x=player_data['year'],
+                y=player_data['ops'],
+                mode='lines+markers',
+                name='OPS',
+                line=dict(color='steelblue', width=3),
+                marker=dict(size=10)
+            ),
+            row=1, col=1
+        )
+        
+        # WAR
+        fig.add_trace(
+            go.Scatter(
+                x=player_data['year'],
+                y=player_data['war'],
+                mode='lines+markers',
+                name='WAR',
+                line=dict(color='green', width=3),
+                marker=dict(size=10)
+            ),
+            row=2, col=1
+        )
+        
+        # Salary
+        fig.add_trace(
+            go.Scatter(
+                x=player_data['year'],
+                y=player_data['salary'] / 1_000_000,
+                mode='lines+markers',
+                name='Salary',
+                line=dict(color='gold', width=3),
+                marker=dict(size=10),
+                fill='tozeroy'
+            ),
+            row=3, col=1
+        )
+        
+        # Mark contract years
+        contract_years = player_data[player_data['big_contract_year'] == True]
+        for _, row in contract_years.iterrows():
+            for i in range(1, 4):
+                fig.add_vline(
+                    x=row['year'],
+                    line_dash="dash",
+                    line_color="red",
+                    row=i, col=1
+                )
+        
+        fig.update_xaxes(title_text="Year", row=3, col=1)
+        fig.update_yaxes(title_text="OPS", row=1, col=1)
+        fig.update_yaxes(title_text="WAR", row=2, col=1)
+        fig.update_yaxes(title_text="Salary ($M)", row=3, col=1)
+        
+        fig.update_layout(height=900, showlegend=False)
+        st.plotly_chart(fig, use_container_width=True)
+        
+        st.markdown("---")
+        
+        # Data table
+        st.subheader("Season-by-Season Data")
+        
+        display_cols = ['year', 'age', 'salary', 'ops', 'war', 'big_contract_year', 'years_from_contract']
+        available_cols = [col for col in display_cols if col in player_data.columns]
+        
+        st.dataframe(
+            player_data[available_cols].style.format({
+                'salary': '${:,.0f}',
+                'ops': '{:.3f}',
+                'war': '{:.1f}',
+                'years_from_contract': '{:.0f}'
+            }),
+            use_container_width=True
+        )
 
-    st.subheader("Data Preview")
-    st.dataframe(df, use_container_width=True)
-
-    st.subheader("Quick Math Sandbox")
-    st.write(
-        "The package's `add` helper is wired up below so students can see how to surface custom utilities."
-    )
-    st.metric(label="add(a, b)", value=add(a, b))
-
-    if show_cleaning:
-        st.subheader("Cleaning Pipeline Output")
-        cleaning_output = _run_with_capture(run_cleaning_pipeling)
-        st.code(cleaning_output or "run_cleaning_pipeling() did not emit text.")
-        st.caption("Replace run_cleaning_pipeling with your real preprocessing logic.")
-
-    if show_analysis:
-        st.subheader("Analysis Pipeline Output")
-        analysis_output = _run_with_capture(run_analysis_pipeline)
-        st.code(analysis_output or "run_analysis_pipeline() did not emit text.")
-        st.caption("Swap this stub with charts, metrics, or model diagnostics from your project.")
-
-    st.info(
-        "Next steps: customize the sidebar controls, drop in Streamlit charts (st.bar_chart, st.map, etc.), "
-        "and layer in explanations so stakeholders can self-serve results."
-    )
-
-
-if __name__ == "__main__":
-    main()
+# ============================================
+# FOOTER
+# ============================================
+st.markdown("---")
+st.markdown("**Data Source:** Baseball Reference (2018-2025) | **Analysis:** MLB Player Contract Performance")
