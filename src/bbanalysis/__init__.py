@@ -36,15 +36,6 @@ __all__ = [
     "churn_with_cloudscraper",
 ]
 
-# from final_project_demo.analysis import run_full_analysis
-
-# # Run the entire analysis
-# results = run_full_analysis(
-#     stats_path='data/MLB_2018_2025_Cleaned.csv',
-#     salary_path='data/salaries.csv',
-#     output_dir='results/plots'
-# )
-
 # your_package/__init__.py
 
 from bbanalysis.analysis import (

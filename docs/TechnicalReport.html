@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Project summary, methodology, and findings placeholder">
 
-<title>Getting Started – website</title>
+<title>Technical Report – website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,41 +20,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -136,11 +102,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Documentation</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./Tutorial.html" aria-current="page"> 
+    <a class="nav-link" href="./Tutorial.html"> 
 <span class="menu-text">Tutorial</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./TechnicalReport.html"> 
+    <a class="nav-link active" href="./TechnicalReport.html" aria-current="page"> 
 <span class="menu-text">Technical Report</span></a>
   </li>  
 </ul>
@@ -154,17 +120,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#executive-summary" id="toc-executive-summary" class="nav-link active" data-scroll-target="#executive-summary">Executive Summary</a></li>
+  <li><a href="#project-context" id="toc-project-context" class="nav-link" data-scroll-target="#project-context">Project Context</a></li>
+  <li><a href="#results-diagnostics" id="toc-results-diagnostics" class="nav-link" data-scroll-target="#results-diagnostics">Results &amp; Diagnostics</a></li>
+  <li><a href="#discussion-next-steps" id="toc-discussion-next-steps" class="nav-link" data-scroll-target="#discussion-next-steps">Discussion &amp; Next Steps</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Getting Started</h1>
+<h1 class="title">Technical Report</h1>
 </div>
 
+<div>
+  <div class="description">
+    Project summary, methodology, and findings placeholder
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -179,39 +159,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Here is how you use my package:</p>
-<div id="730823d0" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># from final_project_demo import add</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># print(add(2, 19))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>have code that actually runs to demonstrate the package actually runs</p>
-<div id="d9452ef6" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># from final_project_demo import run_analysis_pipeline, run_cleaning_pipeling</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># run_cleaning_pipeling()</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># run_analysis_pipeline()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="8c1e51f6" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># from bb_salaries import create_http_headers</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<blockquote class="blockquote">
-<blockquote class="blockquote">
-<blockquote class="blockquote">
-<blockquote class="blockquote">
-<blockquote class="blockquote">
-<blockquote class="blockquote">
-<blockquote class="blockquote">
-<p>partner/master</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<section id="executive-summary" class="level2">
+<h2 class="anchored" data-anchor-id="executive-summary">Executive Summary</h2>
+<p>Overall for this project, we wanted to see if there was a connection between a baseball player’s salary and their on-field performance. We found that there was a connection overall, that as their salary went up their perfomance seemed to go up, overall. While it is imporatnt for teams to thoroughly evaluate each decision they make about which players to sign, overall offering a large contract to a star palyer does not seem to diminish their play. As players get paid more, their perfomrance genreally tends to trend upward.</p>
+</section>
+<section id="project-context" class="level2">
+<h2 class="anchored" data-anchor-id="project-context">Project Context</h2>
+<p><em>TODO: Describe the motivation, stakeholders, and success criteria for this analysis.</em> The motivation behind this was the idea that certian mlb players seem to deteriorate in on-field perfoermace after signing a large free agent contract. We suspected that when players are given enormous sums of money to play, they could develop a sense of security and feel less of a necessity to perform to their whole abilities. These findings could be valuable to major league baseball teams, who could alter their strategies in recruiting and signing free agent players so their teams can play to their full potential. Success criteria for this analysis would be making a significant discovery about this through analysing the data, and in our case gaining sufficient evidence proving our suspicion about player performance and salaries. ## Data Sources All data we collected were from various sections of the site, baseball-reference.com. - <em>Primary dataset:</em> <code>TODO - name and link</code> We collected data from the hitter datasets in baseball reference for each year 2018-2025. This was combined with scraped salary data in other sections of the site for our overall dataset. - <em>Supplementary data:</em> <code>TODO - describe any external references</code> - <em>Data access notes:</em> <code>TODO - mention licenses or refresh cadence</code> Baseball-reference allows this according to their robots.txt. ## Methodology</p>
+<ol type="1">
+<li><em>Data acquisition:</em> <code>TODO - outline collection scripts/APIs</code> We collected data from the hitter datasets in baseball reference for each year 2018-2025. We filtered so only players with 100+ Palte Appearances appeared in the datasets. Salary Data was not available in a large dataset, so we had to build a scraper to loop through each player’s individual page and scrape the salary data, creatign a dataset with just the salary data. We combined these datasets to create our overall dataset for hitters’ statistics and salaries.</li>
+<li><em>Cleaning pipeline:</em> <code>TODO - summarize transformations and validations implemented</code></li>
+<li><em>Analysis workflow:</em> <code>TODO - describe statistical or modeling techniques</code></li>
+<li><em>Tooling:</em> <code>TODO - list packages, environments, and reproducibility steps</code></li>
+</ol>
+</section>
+<section id="results-diagnostics" class="level2">
+<h2 class="anchored" data-anchor-id="results-diagnostics">Results &amp; Diagnostics</h2>
+<p><em>TODO: Summarize the main metrics, charts, or model diagnostics produced. Include links to figures or tables once available.</em></p>
+</section>
+<section id="discussion-next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="discussion-next-steps">Discussion &amp; Next Steps</h2>
+<p><em>TODO: Interpret the results, note limitations, and capture open questions or future experiments.</em></p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

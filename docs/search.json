@@ -4,7 +4,7 @@
     "href": "Tutorial.html",
     "title": "Getting Started",
     "section": "",
-    "text": "Here is how you use my package:\n\nfrom final_project_demo import add\n\nprint(add(2, 19))\n\n21\n\n\n\nfrom final_project_demo import run_analysis_pipeline, run_cleaning_pipeling\n\nrun_cleaning_pipeling()\nrun_analysis_pipeline()\n\nRunning cleaning pipeline...\nRunning analysis pipeline..."
+    "text": "Here is how you use my package:\n\n# from final_project_demo import add\n\n# print(add(2, 19))\n\nhave code that actually runs to demonstrate the package actually runs\n\n# from final_project_demo import run_analysis_pipeline, run_cleaning_pipeling\n\n# run_cleaning_pipeling()\n# run_analysis_pipeline()\n\n\n# from bb_salaries import create_http_headers\n\n\n\n\n\n\n\n\npartner/master"
   },
   {
     "objectID": "Documentation.html",
@@ -19,5 +19,40 @@
     "title": "My Python Package!",
     "section": "",
     "text": "Here is a website all about my package for STAT 386!\nDocumentation here.\nGet started here."
+  },
+  {
+    "objectID": "TechnicalReport.html",
+    "href": "TechnicalReport.html",
+    "title": "Technical Report",
+    "section": "",
+    "text": "Overall for this project, we wanted to see if there was a connection between a baseball player’s salary and their on-field performance. We found that there was a connection overall, that as their salary went up their perfomance seemed to go up, overall. While it is imporatnt for teams to thoroughly evaluate each decision they make about which players to sign, overall offering a large contract to a star palyer does not seem to diminish their play. As players get paid more, their perfomrance genreally tends to trend upward."
+  },
+  {
+    "objectID": "TechnicalReport.html#executive-summary",
+    "href": "TechnicalReport.html#executive-summary",
+    "title": "Technical Report",
+    "section": "",
+    "text": "Overall for this project, we wanted to see if there was a connection between a baseball player’s salary and their on-field performance. We found that there was a connection overall, that as their salary went up their perfomance seemed to go up, overall. While it is imporatnt for teams to thoroughly evaluate each decision they make about which players to sign, overall offering a large contract to a star palyer does not seem to diminish their play. As players get paid more, their perfomrance genreally tends to trend upward."
+  },
+  {
+    "objectID": "TechnicalReport.html#project-context",
+    "href": "TechnicalReport.html#project-context",
+    "title": "Technical Report",
+    "section": "Project Context",
+    "text": "Project Context\nTODO: Describe the motivation, stakeholders, and success criteria for this analysis. The motivation behind this was the idea that certian mlb players seem to deteriorate in on-field perfoermace after signing a large free agent contract. We suspected that when players are given enormous sums of money to play, they could develop a sense of security and feel less of a necessity to perform to their whole abilities. These findings could be valuable to major league baseball teams, who could alter their strategies in recruiting and signing free agent players so their teams can play to their full potential. Success criteria for this analysis would be making a significant discovery about this through analysing the data, and in our case gaining sufficient evidence proving our suspicion about player performance and salaries. ## Data Sources All data we collected were from various sections of the site, baseball-reference.com. - Primary dataset: TODO - name and link We collected data from the hitter datasets in baseball reference for each year 2018-2025. This was combined with scraped salary data in other sections of the site for our overall dataset. - Supplementary data: TODO - describe any external references - Data access notes: TODO - mention licenses or refresh cadence Baseball-reference allows this according to their robots.txt. ## Methodology\n\nData acquisition: TODO - outline collection scripts/APIs We collected data from the hitter datasets in baseball reference for each year 2018-2025. We filtered so only players with 100+ Palte Appearances appeared in the datasets. Salary Data was not available in a large dataset, so we had to build a scraper to loop through each player’s individual page and scrape the salary data, creatign a dataset with just the salary data. We combined these datasets to create our overall dataset for hitters’ statistics and salaries.\nCleaning pipeline: TODO - summarize transformations and validations implemented\nAnalysis workflow: TODO - describe statistical or modeling techniques\nTooling: TODO - list packages, environments, and reproducibility steps"
+  },
+  {
+    "objectID": "TechnicalReport.html#results-diagnostics",
+    "href": "TechnicalReport.html#results-diagnostics",
+    "title": "Technical Report",
+    "section": "Results & Diagnostics",
+    "text": "Results & Diagnostics\nTODO: Summarize the main metrics, charts, or model diagnostics produced. Include links to figures or tables once available."
+  },
+  {
+    "objectID": "TechnicalReport.html#discussion-next-steps",
+    "href": "TechnicalReport.html#discussion-next-steps",
+    "title": "Technical Report",
+    "section": "Discussion & Next Steps",
+    "text": "Discussion & Next Steps\nTODO: Interpret the results, note limitations, and capture open questions or future experiments."
   }
 ]

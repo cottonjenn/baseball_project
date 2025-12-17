@@ -124,6 +124,8 @@ async def scrape_salary_from_url(url: str, session: aiohttp.ClientSession) -> di
         print(f"Unexpected error while scraping {url}: {e}")
         return {}
 
+# csv_path='MLB_2018_2025_Cleaned.csv'
+# output_json_path='unique_links.json'
 
 def extract_unique_links(csv_path: str, output_json_path: str) -> None:
     """Extract unique player links from CSV and save as JSON"""
@@ -186,10 +188,9 @@ def churn_with_cloudscraper():
 
     print("All done!")
 
-
 if __name__ == "__main__":
     # Uncomment to extract unique links from CSV
-    # extract_unique_links("players.csv", "unique_links.json")
+    # extract_unique_links("MLB_2018_2025_Cleaned.csv", "unique_links.json")
    
     # Uncomment to test single scrape
     # async def test_single_scrape():
@@ -198,39 +199,32 @@ if __name__ == "__main__":
     #         print(result)
     # asyncio.run(test_single_scrape())
    
-    # Uncomment to run full scraping
-    asyncio.run(churn_with_cloudscraper())
+    ## Uncomment to run full scraping
+    ## asyncio.run(churn_with_cloudscraper())
 
+    # Remove asyncio.run() since churn_with_cloudscraper is not async
+    # churn_with_cloudscraper()
+    pass
 
-def salaries_json_to_csv(
-    input_json_path: str,
-    output_csv_path: str
-) -> pd.DataFrame:
-    """
-    Load salary data from JSON, normalize it, convert to long format,
-    and save as a CSV.
+## if you want to process the resulting JSON into a CSV --------------------
+# with open("salaries.json") as f:
+#     data = json.load(f)
 
-    Returns the resulting DataFrame.
-    """
-    with open(input_json_path) as f:
-        data = json.load(f)
+# df = pd.json_normalize(data)
+# #df.to_csv("salaries.csv", index=False)
 
-    df = pd.json_normalize(data)
+# #salary = pd.read_csv('salaries.csv')
 
-    long_df = (
-        df.melt(
-            id_vars=["id", "player"],
-            var_name="year",
-            value_name="salary"
-        )
-    )
+# long_df = (
+#     df
+#     .melt(
+#         id_vars=["id", "player"],           # columns to keep
+#         var_name="year",
+#         value_name="salary"
+#     )
+# )
 
-    long_df["year"] = (
-        long_df["year"]
-        .str.replace("salaries.", "", regex=False)
-        .astype(int)
-    )
+# # # Extract year number from 'salaries.2018'
+# long_df["year"] = long_df["year"].str.replace("salaries.", "", regex=False).astype(int)
 
-    long_df.to_csv(output_csv_path, index=False)
-
-    return long_df
+# long_df.to_csv("salaries.csv", index=False)
