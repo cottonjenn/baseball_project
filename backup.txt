@@ -731,3 +731,140 @@ if __name__ == "__main__":
 ```
 
 This last function incoropates All of the other functions, to run the full analysis, allowing us to effectively analyze and visualize the data regarding MLB hitters and salaries.
+
+
+---
+title: "Getting Started"
+jupyter: python3
+---
+
+Here is how you use my package:
+
+```{python}
+from bbanalysis import add
+
+# print(add(2, 19))
+```
+have code that actually runs to demonstrate the package actually runs
+
+```{python}
+from bbanalysis import run_analysis_pipeline, run_cleaning_pipeling
+
+# run_cleaning_pipeling()
+# run_analysis_pipeline()
+```
+
+For the first part of the package use, we will import the first function for scraping the baseball hitting statistics. This will allow you to scrape the  players' statistics from the baseball-reference site.
+```{python}
+import sys
+import os
+sys.path.append(os.path.abspath("src"))
+from bbanalysis.gathering_stats import scrape_batting_data
+
+scrape_batting_data('https://www.baseball-reference.com/leagues/majors/2018-standard-batting.shtml')
+```
+
+Now we will do the second function which allows you to clean the data. Again, this is just the statistical data, not the salary data.
+```{python}
+from bbanalysis.gathering_stats import clean_batting_data
+
+df = [1,2,3,4,5]
+clean_batting_data(df)
+```
+
+This next set of functions from the package are for scraping and organizing the salary data into a nice dataset.
+
+This first one is for creating headers, allowing you to access the data from over 1,000 individaul player pages, as that is the only way to access the salary data.
+```{python}
+from bbanalysis.gathering_salaries import create_http_headers
+
+create_http_headers()
+```
+
+This next function is to parse the salary data from the players' pages and scrape it.
+```{python}
+from bbanalysis.gathering_salaries import parse_salary_table_from_soup
+```
+
+At this point, you should now have scraped all the statistics data and have the setup for scraping the salary data. These following functions futher prepare and execute the scraping of the data from the actual player pages.
+
+```{python}
+from bbanalysis.gathering_salaries import scrape_salary_from_url
+```
+
+This function uses asyncio to actually scrape the data fromt he site, getting the information needed for the parse function to get the salaries from. 
+
+```{python}
+from bbanalysis.gathering_salaries import extract_unique_links
+```
+
+This function is important becuase what it does is allow us to organize all the unique player links in one place. Many of the players in the data show up multiple times becuase they played more than one season over the six-year span, so this filters out repeat links.
+
+```{python}
+from bbanalysis.gathering_salaries import scrape_with_cloudscraper
+```
+
+Now with the scrape_salary_from_url function, you may already be able to scrape the salary data. However, due to rate limits it might be really difficult to scrape the data, and you might get errors. Using cloudscraper allows a user to implement their scraper while still maintaining speed and efficiency. Thus the scrape_with_cloudscraper function prepares us to use a cloudscraper. 
+
+Next you will run this funciton:
+
+```{python}
+from bbanalysis.gathering_salaries import churn_with_cloudscraper
+```
+
+This function implements the cloudscraper by creating one, then loops through the unique links dataset and scrapes all the salary data from 2018-2025 using scrape_with_cloudscraper. It then puts all the data into a .json file that stores the salary data. Once this finishes,you now have all the salary data from 2018-2025!
+
+Now you just need to convert and organize the salary data properly to combine with the other statistical data into one big dataset. This function will organize it as necessary:
+
+```{python}
+from bbanalysis.gathering_salaries import salaries_json_to_csv
+```
+
+Now we'll combine both the datasets using this function:
+
+```{python}
+from bbanalysis.analysis import load_and_merge_data
+```
+
+And now we're ready to do our analysis!
+
+The first thing we will do is filter out players who ahve less than four seasons in the dataset, because we want to compare how salary affects play and it is hard to make significant findings otherwise.
+
+```{python}
+from bbanalysis.analysis import filter_players_with_multiple_seasons
+```
+
+This function filters these players out. 
+Next we will create indicators that mark when a player signs a big contract, leading to a large boost in pay. We will define an increase in $5,000,000 in salary as representative of this. 
+```{python}
+from bbanalysis.analysis import create_contract_indicators
+create_contract_indicators(df_filtered,
+                               pct_threshold=0.5,
+                               abs_threshold=5_000_000)
+```
+
+Now that we have this created, we can effectively compare statistical performance with before and after a large contract signing. One way to effectively do this is to run mixed effects models. We have a function for this:
+
+```{python}
+from bbanalysis.analysis import run_mixed_effects_models
+```
+
+From these mixed effects models we can glean valuable information, like does performance increase or decrease with salary increase or decrease over time, and whether a steep increase in salary can have a big impact on a player's performance.
+
+The next step would be visualizing the data through using this function:
+
+```{python}
+from bbanalysis.analysis import generate_visualizations
+```
+
+Now we can put it all together with this function:
+
+```{python}
+from bbanalysis.analysis import run_full_analysis
+```
+
+This allows us to implement all of these other functions into one full, effective analysis.
+
+
+
+
