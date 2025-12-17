@@ -207,24 +207,35 @@ if __name__ == "__main__":
     pass
 
 ## if you want to process the resulting JSON into a CSV --------------------
-# with open("salaries.json") as f:
-#     data = json.load(f)
+import json
+import pandas as pd
 
-# df = pd.json_normalize(data)
-# #df.to_csv("salaries.csv", index=False)
+def salaries_json_to_csv(json_path: str, csv_path: str) -> None:
+    """
+    Convert salaries.json to a tidy long-format CSV.
 
-# #salary = pd.read_csv('salaries.csv')
+    Args:
+        json_path: Path to the input JSON file (e.g., salaries.json)
+        csv_path: Path to the output CSV file (e.g., salaries.csv)
+    """
+    # Load JSON
+    with open(json_path) as f:
+        data = json.load(f)
 
-# long_df = (
-#     df
-#     .melt(
-#         id_vars=["id", "player"],           # columns to keep
-#         var_name="year",
-#         value_name="salary"
-#     )
-# )
+    # Flatten nested JSON
+    df = pd.json_normalize(data)
 
-# # # Extract year number from 'salaries.2018'
-# long_df["year"] = long_df["year"].str.replace("salaries.", "", regex=False).astype(int)
+    # Convert wide to long format
+    long_df = df.melt(
+        id_vars=["id", "player"],           # keep these columns
+        var_name="year",
+        value_name="salary"
+    )
 
-# long_df.to_csv("salaries.csv", index=False)
+    # Remove 'salaries.' prefix if present and convert year to int
+    long_df["year"] = long_df["year"].str.replace("salaries.", "", regex=False).astype(int)
+
+    # Save to CSV
+    long_df.to_csv(csv_path, index=False)
+
+    print(f"Saved long-format salaries to {csv_path}")
