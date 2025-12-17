@@ -1,11 +1,23 @@
 ---
-title: "My Python Package!"
+title: "Stat 386 Final Project"
 ---
 
-Here is a website all about my package for STAT 386!
+**MLB Baseball Performance vs Salary**
+
+By: Isaac Miller and Jenna Worthen
+
+For our final project, we decided to focus on the effect of salaries on a baseball player’s productivity. One thing that seems to be a common occurrence among baseball players (and the sporting industry as a whole) is that as soon as they sign a big contract of guaranteed money, their production on the field seems to regress. No example of this is more apparent than that of Anthony Rendon, who after almost winning MVP and leading his team to a world series title in 2019, immediately seemed to regress after signing a massive contract with the Los Angeles Angels. This, along with several other notable examples, prompted us to ask the question: Does a player’s salary negatively impact their play? 
+
+![Anthony Rendon by Larry Brown Sports](anthony-rendon.jpg){width=50%}
+
+We will built a python package that will enable users replicate how we scraped and analyzed baseball data from baseball-reference.com. View the links below to see our documentation and results!
 
 Documentation [here](Documentation.qmd).
 
 Get started [here](Tutorial.qmd).
 
 Review the [technical report](TechnicalReport.qmd).
+
+
+
+**Hard Skills we demonstrate in Python:** webscraping (streamlit and BeautifulSoup), modeling with multiple linear regression, data cleaning and wrangling, data visualization

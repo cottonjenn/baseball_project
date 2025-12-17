@@ -122,11 +122,11 @@ This second chunk is the function to actually scrape all the statistics data fro
 #         time.sleep(1.2)
 
 #     return all_data
-# ```
+```
 
-# This third function cleans the data and organizes it into a coherent dataframe. The function within it, get_batting_hand(), identifies whether each player is left handed, right handed, or bats with both hands, as we decided this would also be useful information in determining the overall value of a hitter.
+This third function cleans the data and organizes it into a coherent dataframe. The function within it, get_batting_hand(), identifies whether each player is left handed, right handed, or bats with both hands, as we decided this would also be useful information in determining the overall value of a hitter.
 
-# ```{python}
+```{python}
 # def clean_batting_data(df):
 #     numeric_cols = [
 #         'Age','WAR','G','PA','AB','R','H','2B','3B','HR','RBI','SB','CS',
@@ -261,11 +261,11 @@ This first function creates the headers that allows us to access the data and br
 #                 continue
    
 #     return salary_dict
-  ```
+```
 
-  This second function is the one that finds and parses the salary data in each player's page. It identifies where it is, finds the salaries from 2018-2025, and converts the data frmo string to integer form. One difficulty is that many, if not all, of the players' salary data was within comments in the source code of their individual pages, so we had to account for this in our scraper.
+This second function is the one that finds and parses the salary data in each player's page. It identifies where it is, finds the salaries from 2018-2025, and converts the data frmo string to integer form. One difficulty is that many, if not all, of the players' salary data was within comments in the source code of their individual pages, so we had to account for this in our scraper.
   
-  ```{python}
+```{python}
 #   async def scrape_salary_from_url(url: str, session: aiohttp.ClientSession) -> dict[int, int]:
 #     print(f"Starting to scrape {url}.")
    

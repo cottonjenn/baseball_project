@@ -30,7 +30,7 @@ def get_processed_df():
     
     return df_processed
 
-# Load the processed DataFrame (now it HAS big_contract_year!)
+# Load the processed DataFrame with big contract year
 df_filtered = get_processed_df()
 
 # ============================================
@@ -45,17 +45,16 @@ st.set_page_config(
 # ============================================
 # TITLE AND INTRO
 # ============================================
-st.title("⚾ Baseball Contract Performance Analysis")
+st.title("Baseball Contract Performance Analysis")
 st.markdown("""
 Explore how player performance changes after signing big contracts.
 Analyze individual players, compare groups, and investigate the relationship between salary and performance.
+            **By Isaac Miller and Jenna Worthen**
 """)
 
 # ============================================
-# LOAD DATA (You'll need to pass your df_filtered)
+# LOAD DATA
 # ============================================
-# NOTE: In actual use, you'd load your data here
-# For now, I'll show the structure assuming df_filtered exists
 
 st.sidebar.header("Filters")
 
@@ -124,7 +123,7 @@ if selected_player == "Overview":
     # OVERVIEW TAB
     # ============================================
     
-    st.header("📊 Overall Analysis")
+    st.header("Overall Analysis")
     
     # Key metrics
     col1, col2, col3, col4 = st.columns(4)
@@ -291,7 +290,7 @@ else:
     # INDIVIDUAL PLAYER TAB
     # ============================================
     
-    st.header(f"📈 {selected_player}")
+    st.header(f"{selected_player}")
     
     player_data = df_filtered[df_filtered['player'] == selected_player].sort_values('year')
     
