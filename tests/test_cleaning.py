@@ -1,4 +1,4 @@
-from final_project_demo.cleaning import run_cleaning_pipeling
+from bbanalysis.cleaning import run_cleaning_pipeling
 
 
 def test_run_cleaning_pipeline_prints_message(capsys):

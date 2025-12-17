@@ -149,7 +149,6 @@ def scrape_with_cloudscraper(url: str, scraper) -> dict[int, int]:
         return {}
     
 def churn_with_cloudscraper():
-    # This bypasses Cloudflare ~80–90% of the time
     scraper = cloudscraper.create_scraper(
         browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False},
         delay=10
@@ -203,24 +202,35 @@ if __name__ == "__main__":
     asyncio.run(churn_with_cloudscraper())
 
 
-with open("salaries.json") as f:
-    data = json.load(f)
+def salaries_json_to_csv(
+    input_json_path: str,
+    output_csv_path: str
+) -> pd.DataFrame:
+    """
+    Load salary data from JSON, normalize it, convert to long format,
+    and save as a CSV.
 
-df = pd.json_normalize(data)
-#df.to_csv("salaries.csv", index=False)
+    Returns the resulting DataFrame.
+    """
+    with open(input_json_path) as f:
+        data = json.load(f)
 
-#salary = pd.read_csv('salaries.csv')
+    df = pd.json_normalize(data)
 
-long_df = (
-    df
-    .melt(
-        id_vars=["id", "player"],           # columns to keep
-        var_name="year",
-        value_name="salary"
+    long_df = (
+        df.melt(
+            id_vars=["id", "player"],
+            var_name="year",
+            value_name="salary"
+        )
     )
-)
 
-# # Extract year number from 'salaries.2018'
-long_df["year"] = long_df["year"].str.replace("salaries.", "", regex=False).astype(int)
+    long_df["year"] = (
+        long_df["year"]
+        .str.replace("salaries.", "", regex=False)
+        .astype(int)
+    )
 
-long_df.to_csv("salaries.csv", index=False)
+    long_df.to_csv(output_csv_path, index=False)
+
+    return long_df

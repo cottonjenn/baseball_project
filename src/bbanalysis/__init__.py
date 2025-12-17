@@ -1,7 +1,20 @@
 # from .analysis import run_analysis_pipeline, add
 # from .cleaning import run_cleaning_pipeling
 
-from final_project_demo.gathering_salaries import (
+from bbanalysis.gathering_stats import (
+    scrape_batting_data,
+    clean_batting_data,
+    main,
+)
+
+__all__ = [
+    "scrape_batting_data",
+    "clean_batting_data",
+    "main",
+]
+
+
+from bbanalysis.gathering_salaries import (
     add_one,
     calculate_mean,
     create_http_headers,
@@ -34,7 +47,7 @@ __all__ = [
 
 # your_package/__init__.py
 
-from final_project_demo.analysis import (
+from bbanalysis.analysis import (
     load_and_merge_data,
     filter_players_with_multiple_seasons,
     create_contract_indicators,
