@@ -99,21 +99,53 @@ def create_contract_indicators(df_filtered,
     
     print(f"Found {df['big_contract_year'].sum()} big contract events.")
     
+    # # Mark years relative to first big contract for each player
+    # def mark_years_from_contract(player_df):
+    #     player_df = player_df.copy()  # Keep this!
+    #     if player_df['big_contract_year'].any():
+    #         contract_year = player_df[player_df['big_contract_year']].iloc[0]['year']
+    #         player_df['years_from_contract'] = player_df['year'] - contract_year
+    #     else:
+    #         player_df['years_from_contract'] = np.nan
+    #     return player_df
+
+    # # Remove include_groups (not needed with the .copy() fix)
+    # df = df.groupby('player', group_keys=False).apply(mark_years_from_contract)
+
+    # # Post-contract indicator (0 = pre, 1 = post, NaN = no contract)
+    # df['post_contract'] = (df['years_from_contract'] >= 0).astype(float)
+    # df.loc[df['years_from_contract'].isna(), 'post_contract'] = np.nan
+
+    # return df
+
     # Mark years relative to first big contract for each player
     def mark_years_from_contract(player_df):
+        player_df = player_df.copy()
         if player_df['big_contract_year'].any():
             contract_year = player_df[player_df['big_contract_year']].iloc[0]['year']
             player_df['years_from_contract'] = player_df['year'] - contract_year
         else:
             player_df['years_from_contract'] = np.nan
         return player_df
-    
+
+    print(f"Columns before groupby: {df.columns.tolist()}")
+    print(f"DataFrame shape before groupby: {df.shape}")
+    print(f"Number of players: {df['player'].nunique()}")
+
     df = df.groupby('player', group_keys=False).apply(mark_years_from_contract)
-    
+
+    print(f"Columns after groupby: {df.columns.tolist()}")
+    print(f"DataFrame shape after groupby: {df.shape}")
+    print(f"'years_from_contract' in columns: {'years_from_contract' in df.columns}")
+
+    # Add a safety check
+    if 'years_from_contract' not in df.columns:
+        raise ValueError(f"Failed to create 'years_from_contract' column. Available columns: {df.columns.tolist()}")
+
     # Post-contract indicator (0 = pre, 1 = post, NaN = no contract)
     df['post_contract'] = (df['years_from_contract'] >= 0).astype(float)
     df.loc[df['years_from_contract'].isna(), 'post_contract'] = np.nan
-    
+
     return df
 
 

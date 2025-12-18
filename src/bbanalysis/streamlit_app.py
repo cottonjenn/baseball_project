@@ -15,15 +15,37 @@ from bbanalysis.analysis import (
     generate_visualizations,         # optional, if you want plots
 )
 
-# Cache the processed data so it only runs once (or when the CSV changes)
+# # Cache the processed data so it only runs once (or when the CSV changes)
+# @st.cache_data
+# def get_processed_df():
+#     # Step 1: Load the pre-merged file (fast!)
+#     print("Loading pre-merged data...")
+#     df_full = pd.read_csv('MLB_2018_2025_Full.csv')
+    
+#     # Step 2: Filter players with enough seasons
+#     df_filtered = filter_players_with_multiple_seasons(df_full, min_seasons=4)
+    
+#     # Step 3: Create the crucial contract indicators
+#     df_processed = create_contract_indicators(df_filtered)
+    
+#     return df_processed
+
 @st.cache_data
 def get_processed_df():
     # Step 1: Load the pre-merged file (fast!)
     print("Loading pre-merged data...")
     df_full = pd.read_csv('MLB_2018_2025_Full.csv')
     
+    # DEBUG: Check what we loaded
+    print(f"CSV loaded! Shape: {df_full.shape}")
+    print(f"Columns: {df_full.columns.tolist()}")
+    print(f"First few rows:\n{df_full.head()}")
+    print(f"Unique players: {df_full['player'].nunique() if 'player' in df_full.columns else 'NO PLAYER COLUMN'}")
+    
     # Step 2: Filter players with enough seasons
     df_filtered = filter_players_with_multiple_seasons(df_full, min_seasons=5)
+    
+    print(f"After filtering: {df_filtered.shape}")
     
     # Step 3: Create the crucial contract indicators
     df_processed = create_contract_indicators(df_filtered)
