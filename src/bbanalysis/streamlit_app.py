@@ -23,7 +23,7 @@ def get_processed_df():
     df_full = pd.read_csv('MLB_2018_2025_Full.csv')
     
     # Step 2: Filter players with enough seasons
-    df_filtered = filter_players_with_multiple_seasons(df_full, min_seasons=5)
+    df_filtered = filter_players_with_multiple_seasons(df_full, min_seasons=4)
     
     # Step 3: Create the crucial contract indicators
     df_processed = create_contract_indicators(df_filtered)
