@@ -77,12 +77,6 @@ print(result)
 At this point, you should now have scraped all the statistics data and have the setup for scraping the salary data. These following functions futher prepare and execute the scraping of the data from the actual player pages.
 
 ```{python}
-# from bbanalysis.gathering_salaries import scrape_salary_from_url# 
-```
-
-This function uses asyncio to actually scrape the data fromt he site, getting the information needed for the parse function to get the salaries from. 
-
-```{python}
 import pandas as pd
 import json
 from bbanalysis.gathering_salaries import extract_unique_links 

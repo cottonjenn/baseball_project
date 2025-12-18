@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "bbanalysis"
-version = "0.1.0"
+version = "0.2.2"
 description = "Analyzing baseball statistics with salaries"
 readme = "README.md"
 requires-python = ">=3.11"
