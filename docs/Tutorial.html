@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Getting Started – website</title>
+<title>Getting Started</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -105,10 +105,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
-
-
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
-
 
 
 <link rel="stylesheet" href="styles.css">
@@ -122,9 +119,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    </a>
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">website</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -187,7 +181,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>Here is how you use my package:</p>
 <p>For the first part of the package use, we will import the first function for scraping the baseball hitting statistics. This will allow you to scrape the players’ statistics from the baseball-reference site.</p>
-<div id="ddc4f0ed" class="cell" data-execution_count="1">
+<div id="6caf4b22" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sys.path.append(os.path.abspath(<span class="st">"src"</span>))</span>
@@ -202,7 +196,7 @@ Scraping 2018...
 </div>
 </div>
 <p>Now we will do the second function which allows you to clean the data. Again, this is just the statistical data, not the salary data.</p>
-<div id="d8001a5d" class="cell" data-execution_count="2">
+<div id="757efe4e" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bbanalysis.gathering_stats <span class="im">import</span> clean_batting_data</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -376,7 +370,7 @@ Scraping 2018...
 </div>
 <p>This next set of functions from the package are for scraping and organizing the salary data into a nice dataset.</p>
 <p>This first one is for creating headers, allowing you to access the data from over 1,000 individaul player pages, as that is the only way to access the salary data.</p>
-<div id="e85880f4" class="cell" data-execution_count="3">
+<div id="c8c2ed08" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bbanalysis.gathering_salaries <span class="im">import</span> create_http_headers</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>create_http_headers()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -390,7 +384,7 @@ Scraping 2018...
 </div>
 </div>
 <p>This next function is to parse the salary data from the players’ pages and scrape it.</p>
-<div id="901ccb0b" class="cell" data-execution_count="4">
+<div id="87c08efd" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bbanalysis.gathering_salaries <span class="im">import</span> parse_salary_table_from_soup</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -424,7 +418,7 @@ Scraping 2018...
 </div>
 </div>
 <p>At this point, you should now have scraped all the statistics data and have the setup for scraping the salary data. These following functions futher prepare and execute the scraping of the data from the actual player pages.</p>
-<div id="58a28512" class="cell" data-execution_count="5">
+<div id="39cbcd6f" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bbanalysis.gathering_salaries <span class="im">import</span> extract_unique_links </span>
@@ -456,7 +450,7 @@ Scraping 2018...
 </div>
 </div>
 <p>This function is important becuase what it does is allow us to organize all the unique player links in one place. Many of the players in the data show up multiple times becuase they played more than one season over the six-year span, so this filters out repeat links.</p>
-<div id="d6b9c42f" class="cell" data-execution_count="6">
+<div id="afe7a9af" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cloudscraper</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bbanalysis.gathering_salaries <span class="im">import</span> scrape_with_cloudscraper</span>
@@ -482,7 +476,7 @@ Scraping 2018...
 </div>
 <p>Now with the scrape_salary_from_url function, you may already be able to scrape the salary data. However, due to rate limits it might be really difficult to scrape the data, and you might get errors. Using cloudscraper allows a user to implement their scraper while still maintaining speed and efficiency. Thus the scrape_with_cloudscraper function prepares us to use a cloudscraper.</p>
 <p>Next you will run this funciton:</p>
-<div id="3df74ec4" class="cell" data-execution_count="7">
+<div id="536fd82b" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If we were to run this, it would take an hour. This function below loops scrape_with_cloudscraper for all links. </span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># from bbanalysis.gathering_salaries import churn_with_cloudscraper</span></span>
@@ -490,7 +484,7 @@ Scraping 2018...
 </div>
 <p>This function implements the cloudscraper by creating one, then loops through the unique links dataset and scrapes all the salary data from 2018-2025 using scrape_with_cloudscraper. It then puts all the data into a .json file that stores the salary data. Once this finishes,you now have all the salary data from 2018-2025!</p>
 <p>Now you just need to convert and organize the salary data properly to combine with the other statistical data into one big dataset. This function will organize it as necessary:</p>
-<div id="592a9a10" class="cell" data-execution_count="8">
+<div id="a6fa143b" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bbanalysis.gathering_salaries <span class="im">import</span> salaries_json_to_csv</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>salaries_json_to_csv(<span class="st">"lindor_data.json"</span>, <span class="st">"lindor_data.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -498,7 +492,7 @@ Scraping 2018...
 </div>
 </div>
 <p>Now we’ll combine both the datasets using this function:</p>
-<div id="17e52ebd" class="cell" data-execution_count="9">
+<div id="5f403243" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bbanalysis.analysis <span class="im">import</span> load_and_merge_data</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -532,7 +526,7 @@ Merged data saved to test_merged.csv
 </div>
 <p>And now we’re ready to do our analysis!</p>
 <p>The first thing we will do is filter out players who ahve less than five seasons in the dataset, because we want to compare how salary affects play and it is hard to make significant findings otherwise.</p>
-<div id="074cdfbb" class="cell" data-execution_count="10">
+<div id="9a247b94" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bbanalysis.analysis <span class="im">import</span> filter_players_with_multiple_seasons</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -559,7 +553,7 @@ Merged data saved to test_merged.csv
 </div>
 </div>
 <p>This function filters these players out. Next we will create indicators that mark when a player signs a big contract, leading to a large boost in pay. We will define an increase in $5,000,000 in salary as representative of this.</p>
-<div id="c9039886" class="cell" data-execution_count="11">
+<div id="c88a6cb8" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bbanalysis.analysis <span class="im">import</span> create_contract_indicators</span>
@@ -610,7 +604,7 @@ DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprec
 </div>
 </div>
 <p>Now that we have this created, we can effectively compare statistical performance with before and after a large contract signing. One way to effectively do this is to run mixed effects models. We have a function for this:</p>
-<div id="5a69952f" class="cell" data-execution_count="12">
+<div id="c69d14f1" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bbanalysis.analysis <span class="im">import</span> run_mixed_effects_models</span>
@@ -640,7 +634,28 @@ DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprec
 <span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(results.get(<span class="st">'df_model2'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Running Model 1: Salary → OPS (all players)</code></pre>
+Running Model 1: Salary → OPS (all players)
+        Mixed Linear Model Regression Results
+=====================================================
+Model:            MixedLM Dependent Variable: ops    
+No. Observations: 9       Method:             ML     
+No. Groups:       3       Scale:              0.0002 
+Min. group size:  3       Log-Likelihood:     26.3591
+Max. group size:  3       Converged:          Yes    
+Mean group size:  3.0                                
+-----------------------------------------------------
+          Coef.  Std.Err.   z    P&gt;|z|  [0.025 0.975]
+-----------------------------------------------------
+Intercept 11.122   11.416  0.974 0.330 -11.253 33.497
+salary    -0.000    0.000 -2.246 0.025  -0.000 -0.000
+war        0.045    0.004 12.693 0.000   0.038  0.052
+year      -0.005    0.006 -0.922 0.356  -0.016  0.006
+Group Var  0.000                                     
+=====================================================
+
+
+Running Model 2: Pre vs Post contract performance
+Using 6 observations from 2 players.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>C:\Users\Jenna\OneDrive\Desktop\Statistics\Stat 386\Final_Project\.venv\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:1634: UserWarning:
@@ -658,29 +673,8 @@ Random effects covariance is singular
 C:\Users\Jenna\OneDrive\Desktop\Statistics\Stat 386\Final_Project\.venv\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:1634: UserWarning:
 
 Random effects covariance is singular
-</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        Mixed Linear Model Regression Results
-=====================================================
-Model:            MixedLM Dependent Variable: ops    
-No. Observations: 9       Method:             ML     
-No. Groups:       3       Scale:              0.0002 
-Min. group size:  3       Log-Likelihood:     26.3591
-Max. group size:  3       Converged:          Yes    
-Mean group size:  3.0                                
------------------------------------------------------
-          Coef.  Std.Err.   z    P&gt;|z|  [0.025 0.975]
------------------------------------------------------
-Intercept 11.122   11.416  0.974 0.330 -11.253 33.497
-salary    -0.000    0.000 -2.246 0.025  -0.000 -0.000
-war        0.045    0.004 12.693 0.000   0.038  0.052
-year      -0.005    0.006 -0.922 0.356  -0.016  0.006
-Group Var  0.000                                     
-=====================================================</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\Jenna\OneDrive\Desktop\Statistics\Stat 386\Final_Project\.venv\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning:
+
+C:\Users\Jenna\OneDrive\Desktop\Statistics\Stat 386\Final_Project\.venv\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2237: ConvergenceWarning:
 
 The MLE may be on the boundary of the parameter space.
 
@@ -695,14 +689,18 @@ Maximum Likelihood optimization failed to converge. Check mle_retvals
 C:\Users\Jenna\OneDrive\Desktop\Statistics\Stat 386\Final_Project\.venv\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2200: ConvergenceWarning:
 
 Retrying MixedLM optimization with lbfgs
+
+C:\Users\Jenna\OneDrive\Desktop\Statistics\Stat 386\Final_Project\.venv\Lib\site-packages\statsmodels\base\model.py:607: ConvergenceWarning:
+
+Maximum Likelihood optimization failed to converge. Check mle_retvals
+
+C:\Users\Jenna\OneDrive\Desktop\Statistics\Stat 386\Final_Project\.venv\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2200: ConvergenceWarning:
+
+Retrying MixedLM optimization with cg
 </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-
-Running Model 2: Pre vs Post contract performance
-Using 6 observations from 2 players.
-            Mixed Linear Model Regression Results
+<pre><code>            Mixed Linear Model Regression Results
 =============================================================
 Model:                MixedLM   Dependent Variable:   ops    
 No. Observations:     6         Method:               ML     
@@ -779,14 +777,6 @@ Restricted df for Model 2:
 
 Maximum Likelihood optimization failed to converge. Check mle_retvals
 
-C:\Users\Jenna\OneDrive\Desktop\Statistics\Stat 386\Final_Project\.venv\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2200: ConvergenceWarning:
-
-Retrying MixedLM optimization with cg
-
-C:\Users\Jenna\OneDrive\Desktop\Statistics\Stat 386\Final_Project\.venv\Lib\site-packages\statsmodels\base\model.py:607: ConvergenceWarning:
-
-Maximum Likelihood optimization failed to converge. Check mle_retvals
-
 C:\Users\Jenna\OneDrive\Desktop\Statistics\Stat 386\Final_Project\.venv\Lib\site-packages\statsmodels\regression\mixed_linear_model.py:2206: ConvergenceWarning:
 
 MixedLM optimization failed, trying a different optimizer may help.
@@ -807,29 +797,29 @@ The Hessian matrix at the estimated parameter values is not positive definite.
 </div>
 <p>From these mixed effects models we can glean valuable information, like does performance increase or decrease with salary increase or decrease over time, and whether a steep increase in salary can have a big impact on a player’s performance.</p>
 <p>The next step would be visualizing the data through using this function:</p>
-<div id="d07441ab" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bbanalysis.analysis <span class="im">import</span> generate_visualizations</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>test_data <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"player"</span>: [<span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"C"</span>, <span class="st">"C"</span>],</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"year"</span>: [<span class="dv">2018</span>, <span class="dv">2019</span>, <span class="dv">2020</span>, <span class="dv">2018</span>, <span class="dv">2019</span>, <span class="dv">2020</span>, <span class="dv">2018</span>, <span class="dv">2019</span>, <span class="dv">2020</span>],</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ops"</span>: [<span class="fl">0.800</span>, <span class="fl">0.850</span>, <span class="fl">0.900</span>, <span class="fl">0.700</span>, <span class="fl">0.720</span>, <span class="fl">0.710</span>, <span class="fl">0.750</span>, <span class="fl">0.760</span>, <span class="fl">0.770</span>],</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"war"</span>: [<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">5</span>],</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"years_from_contract"</span>: [<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, np.nan, np.nan, np.nan, <span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"post_contract"</span>: [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, np.nan, np.nan, np.nan, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>]</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>output_dir <span class="op">=</span> <span class="st">"test_plots"</span></span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(output_dir):</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> shutil</span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    shutil.rmtree(output_dir)</span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>generate_visualizations(test_data, output_dir<span class="op">=</span>output_dir)</span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Files in output directory:"</span>, os.listdir(output_dir))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="510ec46e" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bbanalysis.analysis <span class="im">import</span> generate_visualizations</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>test_data <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"player"</span>: [<span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"C"</span>, <span class="st">"C"</span>],</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"year"</span>: [<span class="dv">2018</span>, <span class="dv">2019</span>, <span class="dv">2020</span>, <span class="dv">2018</span>, <span class="dv">2019</span>, <span class="dv">2020</span>, <span class="dv">2018</span>, <span class="dv">2019</span>, <span class="dv">2020</span>],</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ops"</span>: [<span class="fl">0.800</span>, <span class="fl">0.850</span>, <span class="fl">0.900</span>, <span class="fl">0.700</span>, <span class="fl">0.720</span>, <span class="fl">0.710</span>, <span class="fl">0.750</span>, <span class="fl">0.760</span>, <span class="fl">0.770</span>],</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"war"</span>: [<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">5</span>],</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"years_from_contract"</span>: [<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, np.nan, np.nan, np.nan, <span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>],</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"post_contract"</span>: [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, np.nan, np.nan, np.nan, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>output_dir <span class="op">=</span> <span class="st">"test_plots"</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(output_dir):</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> shutil</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    shutil.rmtree(output_dir)</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>generate_visualizations(test_data, output_dir<span class="op">=</span>output_dir)</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Files in output directory:"</span>, os.listdir(output_dir))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Generating visualizations → saved to 'test_plots/'

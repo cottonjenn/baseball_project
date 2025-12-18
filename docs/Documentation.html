@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Documentation – website</title>
+<title>Documentation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -117,9 +117,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
     </a>
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">website</span>
-    </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -182,7 +179,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This goes through the process of each function for each step of our process of collecting the data, organizing it into a coherent dataset, and performing analysis.</p>
 <p>The first part starts with the collection of baseball hitting statistics from 2018 - 2025 to get a large sample of current data to work with. Collecting salaries was more complicated so we will go over this after. All the data was collected through the site baseball-reference.com.</p>
 <p>This first chunk will show the initial setup for the data collection:</p>
-<div id="26167f87" class="cell">
+<div id="551fd7a1" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup</span>
@@ -212,7 +209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This chunk sets up where the data is going to be scraped from and which columns to use.</p>
 <p>This second chunk is the function to actually scrape all the statistics data from those pages. It identifies where to scrape from, how many rows to scrape, and loops through the hitting dataset from each year from 2018 - 2025. It creates the dataframe for all the statistics.</p>
-<div id="d6ded978" class="cell">
+<div id="74c884ac" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scrape_batting_data(urls):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    all_data <span class="op">=</span> []</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -297,7 +294,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> all_data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This third function cleans the data and organizes it into a coherent dataframe. The function within it, get_batting_hand(), identifies whether each player is left handed, right handed, or bats with both hands, as we decided this would also be useful information in determining the overall value of a hitter.</p>
-<div id="dbc2b12c" class="cell">
+<div id="9f383fb9" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_batting_data(df):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    numeric_cols <span class="op">=</span> [</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Age'</span>,<span class="st">'WAR'</span>,<span class="st">'G'</span>,<span class="st">'PA'</span>,<span class="st">'AB'</span>,<span class="st">'R'</span>,<span class="st">'H'</span>,<span class="st">'2B'</span>,<span class="st">'3B'</span>,<span class="st">'HR'</span>,<span class="st">'RBI'</span>,<span class="st">'SB'</span>,<span class="st">'CS'</span>,</span>
@@ -333,7 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This main function actually implements the previous functions, scraping all the statistics according to how we wanted, to create a dataset of each mlb hitter from 2018 - 2025, filtered to players with over 100 plate appearances in at least one of the seasons.</p>
-<div id="2b86da81" class="cell">
+<div id="e33f23de" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main():</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    all_data <span class="op">=</span> scrape_batting_data(URLS)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -356,7 +353,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    main()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now we will move on to the next part of the data collection, which is gathering the salary data. This was more complicated to collect, because there is no dataset that has each player’s salary data in one place. We had to build a scraper that iterated through the unique page of each player in the dataset within baseball-reference and scraped their salaries from 2018 - 2025. The first dataset had included the links to each of these players’ pages, so we utilized this to create a json file of unique player links for the scraper to iterate through, so that no players’ page would be accessed more than once. Each code chunk will be explained below.</p>
-<div id="097e95d6" class="cell">
+<div id="4e40e9a1" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_http_headers() <span class="op">-&gt;</span> <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">'User-Agent'</span>: <span class="st">'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'</span>,</span>
@@ -368,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This first function creates the headers that allows us to access the data and browser without being blocked.</p>
-<div id="cd191ee5" class="cell">
+<div id="afc20b77" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_salary_table_from_soup(soup: BeautifulSoup) <span class="op">-&gt;</span> <span class="bu">dict</span>[<span class="bu">int</span>, <span class="bu">int</span>]:</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    salary_dict <span class="op">=</span> {}</span>
@@ -428,7 +425,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> salary_dict</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This second function is the one that finds and parses the salary data in each player’s page. It identifies where it is, finds the salaries from 2018-2025, and converts the data frmo string to integer form. One difficulty is that many, if not all, of the players’ salary data was within comments in the source code of their individual pages, so we had to account for this in our scraper.</p>
-<div id="082695fc" class="cell">
+<div id="1fbc63d6" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_unique_links(csv_path: <span class="bu">str</span>, output_json_path: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Extract unique player links from CSV and save as JSON"""</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(csv_path)</span>
@@ -441,7 +438,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        json.dump(links_with_ids, f, indent<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This function extracts the links out of the dataset of player links, to create a list of each unique players’ page links (each player’s link appearing once). This allows our function to easily loop through without accessing players’ pages multiple times, as many players played multiple seasons over the 2018 - 2025 period.</p>
-<div id="87ae657f" class="cell">
+<div id="e20ac61e" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scrape_with_cloudscraper(url: <span class="bu">str</span>, scraper) <span class="op">-&gt;</span> <span class="bu">dict</span>[<span class="bu">int</span>, <span class="bu">int</span>]:</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Scraping </span><span class="sc">{</span>url<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
@@ -453,7 +450,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This function utilizes cloudscraper to bypass Cloudflare in baseball-reference, ebcause cloudflare was blocking any attempts to scrape data from the pages otherwise.</p>
-<div id="25a4ad60" class="cell">
+<div id="6a80418b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> churn_with_cloudscraper():</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    scraper <span class="op">=</span> cloudscraper.create_scraper(</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        browser<span class="op">=</span>{<span class="st">'browser'</span>: <span class="st">'chrome'</span>, <span class="st">'platform'</span>: <span class="st">'windows'</span>, <span class="st">'mobile'</span>: <span class="va">False</span>},</span>
@@ -493,7 +490,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This function organizes everything together to scrape the data, utilizing the cloudscraper function, laoding all the urls, saving progress to be able to pause and resume later, iterates over each link, limits rates, and outputs the data to salaries.json.</p>
 <p>So now we have all the data scraped that we need. We just need to organize it into a coherent dataset so we can perform analysis. Since we used json files to store the salary data, we need to convert it to csv so we can combine it with the hitting statistics data.</p>
-<div id="870f9e8b" class="cell">
+<div id="2bd38cd2" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"salaries.json"</span>) <span class="im">as</span> f:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> json.load(f)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -514,7 +511,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>long_df.to_csv(<span class="st">"salaries.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This code converts the salary.json file into a csv file, and melts to organize the data to easily combine with the other salary data.</p>
-<div id="6b99d077" class="cell">
+<div id="84c25b16" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_and_merge_data(stats_path<span class="op">=</span><span class="st">'MLB_2018_2025_Cleaned.csv'</span>,</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                        salary_path<span class="op">=</span><span class="st">'salaries.csv'</span>,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                        output_merged_path<span class="op">=</span><span class="st">'MLB_2018_2025_Full.csv'</span>):</span>
@@ -546,7 +543,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> full</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This function conbines the salary and statsitcs datasets together into one dataset.</p>
-<div id="572c3bfb" class="cell">
+<div id="0a5063b4" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> filter_players_with_multiple_seasons(df, min_seasons<span class="op">=</span><span class="dv">5</span>):</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Filter to players with at least `min_seasons` seasons (default &gt;4, i.e. 5+).</span></span>
@@ -565,7 +562,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_filtered</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This function takes the dataset and filters out some of the players. MAny players in the dataset didn’t have salareis recorded in baseball-reference, so tehy had to be filtered out, and many others only played one or two seasons during the period, so they were filtered out as well.</p>
-<div id="6d61dca8" class="cell">
+<div id="f8260654" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_contract_indicators(df_filtered,</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                               pct_threshold<span class="op">=</span><span class="fl">0.5</span>,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                               abs_threshold<span class="op">=</span><span class="dv">5_000_000</span>):</span>
@@ -616,7 +613,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This function creates big contract indicators. Basically we wanted to identify when a player signed a big contract, to see if his play drastically changed from before to after they signed a contrct. It identifies when a player signed a large contract, defined as at least a 5 million dollar increase in salary, and marks up to two years before and after the signing.</p>
-<div id="2d76dfae" class="cell">
+<div id="3823768b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_mixed_effects_models(df_processed, window_years<span class="op">=</span><span class="dv">3</span>):</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Run the two main mixed-effects models:</span></span>
@@ -686,7 +683,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> results</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This function creates mixed effects models to visualize salary with hitting statistics comparisons, and for before and after the contract signnig; it also makes comparisons based on age, because if a player signs a contract at a certain age their decline could be more due to age than the contract signing.</p>
-<div id="963cc0ac" class="cell">
+<div id="553d9936" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_full_analysis(stats_path<span class="op">=</span><span class="st">'MLB_2018_2025_Cleaned.csv'</span>,</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                      salary_path<span class="op">=</span><span class="st">'salaries.csv'</span>,</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                      min_seasons<span class="op">=</span><span class="dv">5</span>,</span>
