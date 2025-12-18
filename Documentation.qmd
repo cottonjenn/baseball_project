@@ -266,36 +266,7 @@ def parse_salary_table_from_soup(soup: BeautifulSoup) -> dict[int, int]:
 ```
 
 This second function is the one that finds and parses the salary data in each player's page. It identifies where it is, finds the salaries from 2018-2025, and converts the data frmo string to integer form. One difficulty is that many, if not all, of the players' salary data was within comments in the source code of their individual pages, so we had to account for this in our scraper.
-  
-```{python}
-  async def scrape_salary_from_url(url: str, session: aiohttp.ClientSession) -> dict[int, int]:
-    print(f"Starting to scrape {url}.")
-   
-    try:
-        async with session.get(url, timeout=aiohttp.ClientTimeout(total=30)) as response:
-            if response.status != 200:
-                print(f"Failed to fetch {url}: HTTP {response.status}")
-                return {}
-           
-            html = await response.text()
-            soup = BeautifulSoup(html, 'html.parser')
-            salary_dict = parse_salary_table_from_soup(soup)
-           
-            print(f"Done scraping {url}. Found {len(salary_dict)} salary entries.")
-            return salary_dict
-           
-    except asyncio.TimeoutError:
-        print(f"Timeout while scraping {url}")
-        return {}
-    except aiohttp.ClientError as e:
-        print(f"HTTP error while scraping {url}: {e}")
-        return {}
-    except Exception as e:
-        print(f"Unexpected error while scraping {url}: {e}")
-        return {}
-```
 
-This function downloads each player's page asynchonously and extracts the salary data.
 
 ```{python}
 def extract_unique_links(csv_path: str, output_json_path: str) -> None:
