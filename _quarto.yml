@@ -16,8 +16,7 @@ website:
 
 format:
   html:
-    theme:
-      - default
+    theme: default
     css: styles.css
     toc: true
 
